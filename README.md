@@ -4,6 +4,7 @@
 1. Clone repository
 2. Run `npm install`
 3. Run `npm run dev` to start the development server
+4. Go to `http://localhost:5173/` to view the dashboard
 
 ## Technical decisions
 - I went with a simple one component approach to avoid having to share types & utils around
