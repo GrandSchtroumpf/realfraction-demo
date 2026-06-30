@@ -40,3 +40,7 @@ ul {
 dd {
   margin-inline: unset;
 }
+
+input {
+  font-size: 1rem;
+}
