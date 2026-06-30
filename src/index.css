@@ -1,0 +1,38 @@
+@import "./styles/colors.css";
+@import "./styles/button.css";
+@import "./styles/table.css";
+@import "./styles/menu.css";
+@import "./styles/radio.css";
+
+:root {
+  --hue: 280;
+  --outline: oklch(50% 0.01 var(--hue));
+  color-scheme: light dark;
+}
+
+/* reset */
+html,
+body,
+#root {
+  min-height: 100dvh;
+}
+body {
+  margin: 0;
+  background-color: var(--surface-lowest);
+  font-family: Roboto, system-ui;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin-block: unset;
+}
+
+ul {
+  list-style: none;
+  padding-left: unset;
+  margin-block: unset;
+}

@@ -1,0 +1,40 @@
+@layer components {
+  .menu {
+    margin-inline: 0;
+    margin-block: 0.5rem;
+    inset: auto;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: var(--surface-high);
+    /* Required: Take the element out of normal flow */
+    position: fixed;
+
+    position-try-fallbacks:
+      flip-block,
+      flip-inline,
+      flip-block flip-inline;
+
+    /* Optional: Smooth transition when the browser snaps it to a new position */
+    position-try-order: normal;
+
+    opacity: 0;
+    transform: scale(0);
+    transition-property: opacity, transform, overlay, display;
+    transition-duration: 0.3s;
+    transition-behavior: allow-discrete;
+    transition-timing-function: var(--ease-out);
+    transform-origin: var(--menu-transform-origin);
+  }
+
+  .menu:popover-open {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  @starting-style {
+    .menu:popover-open {
+      opacity: 0;
+      transform: scale(0);
+    }
+  }
+}

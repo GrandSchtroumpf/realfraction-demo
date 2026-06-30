@@ -1,0 +1,19 @@
+@layer components {
+  .radio-group {
+    display: grid;
+  }
+  .radio {
+    position: relative;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+  }
+  .radio input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    z-index: 1;
+  }
+  .radio:has(input:checked) {
+    background-color: var(--primary-container);
+  }
+}

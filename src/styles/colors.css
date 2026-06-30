@@ -1,0 +1,32 @@
+:root {
+  @media (prefers-color-scheme: light) {
+    --chroma-low: 4%;
+    --chroma-mid: 7%;
+    --chroma-high: 40%;
+
+    --surface-lowest: oklch(93% var(--chroma-low) var(--hue));
+    --surface-low: oklch(96% var(--chroma-low) var(--hue));
+    --surface: oklch(98% var(--chroma-low) var(--hue));
+    --surface-high: oklch(99% var(--chroma-low) var(--hue));
+    --surface-highest: oklch(100% var(--chroma-low) var(--hue));
+
+    --primary-container: oklch(93% var(--chroma-mid) var(--hue));
+    --primary: oklch(50% var(--chroma-high) var(--hue));
+    --on-primary: oklch(100% var(--chroma-mid) var(--hue));
+  }
+  @media (prefers-color-scheme: dark) {
+    --chroma-low: 4%;
+    --chroma-mid: 7%;
+    --chroma-high: 50%;
+
+    --surface-lowest: oklch(10% var(--chroma-low) var(--hue));
+    --surface-low: oklch(17% var(--chroma-low) var(--hue));
+    --surface: oklch(20% var(--chroma-low) var(--hue));
+    --surface-high: oklch(25% var(--chroma-low) var(--hue));
+    --surface-highest: oklch(30% var(--chroma-low) var(--hue));
+
+    --primary-container: oklch(30% var(--chroma-mid) var(--hue));
+    --primary: oklch(85% var(--chroma-high) var(--hue));
+    --on-primary: oklch(20% var(--chroma-mid) var(--hue));
+  }
+}

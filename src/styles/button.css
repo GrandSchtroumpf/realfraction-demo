@@ -1,0 +1,57 @@
+@layer components {
+  .btn {
+    --color: transparent;
+    --on-color: currentColor;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 100vh;
+    box-sizing: border-box;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+
+    background-color: var(--color, transparent);
+    color: var(--on-color, currentColor);
+
+    &:hover {
+      background-color: color-mix(in oklch, var(--color), var(--on-color) 12%);
+    }
+    &:active {
+      background-color: color-mix(in oklch, var(--color), var(--on-color) 24%);
+    }
+    &:focus-visible {
+      outline-style: solid;
+      outline-width: 1.5px;
+      outline-color: var(--on-color, currentColor);
+    }
+
+    &:disabled,
+    &.disabled {
+      opacity: 0.5;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    &.icon {
+      aspect-ratio: 1 / 1;
+      display: grid;
+      place-items: center;
+      border: none;
+      line-height: 0;
+      padding: 0.5rem;
+      &.gradient {
+        svg {
+          fill: url("#svg-gradient");
+        }
+      }
+    }
+    & svg {
+      height: var(--icon-size, 24px);
+      width: var(--icon-size, 24px);
+      flex-shrink: 0;
+      fill: var(--on-color, currentColor);
+    }
+  }
+}

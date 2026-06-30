@@ -1,0 +1,33 @@
+@layer components {
+  .table {
+    border-collapse: collapse;
+    border-radius: 1rem;
+    width: 100%;
+    &:has(tbody:empty) {
+      display: none;
+      & + .table-empty {
+        display: block;
+      }
+    }
+    & td,
+    & th {
+      padding: 1rem;
+    }
+    & th {
+      text-align: start;
+      opacity: 0.8;
+    }
+    & td:first-child,
+    & th:first-child {
+      padding-inline-start: 1.5rem;
+    }
+    & td:last-child,
+    & th:last-child {
+      text-align: end;
+      padding-inline-end: 1.5rem;
+    }
+  }
+  .table-empty {
+    display: none;
+  }
+}

@@ -1,0 +1,174 @@
+#dashboard-page {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 1rem;
+  min-height: 100dvh;
+  margin-inline: auto;
+  max-width: 1200px;
+}
+@scope (#dashboard-page) {
+  .main-header {
+    display: grid;
+    justify-items: center;
+    gap: 2rem;
+    padding: 2rem 1rem;
+    text-align: center;
+    & h1 {
+      font-size: clamp(1.7rem, 5vw, 3rem);
+      font-weight: 500;
+    }
+    & .total-liquidity {
+      display: grid;
+      place-items: center;
+    }
+    & .price {
+      font-size: 3rem;
+      font-weight: 500;
+    }
+  }
+
+  main {
+    display: grid;
+    align-content: start;
+    padding: 1rem;
+    gap: 2rem;
+  }
+
+  search {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: "prefix input suffix";
+    border-radius: 100vh;
+    border: 1px solid transparent;
+    background-color: var(--surface);
+
+    /* SEARCH */
+    &:has(input[type="search"]:focus-visible) {
+      border-color: var(--primary);
+      & .search-label {
+        color: var(--primary);
+      }
+    }
+    /* If input has value keep label on top */
+    &:has(input[type="search"]:focus-visible),
+    &:has(input[type="search"]:not(:placeholder-shown)) {
+      & .search-label {
+        transform: scale(0.75) translateY(-80%);
+        color: var(--primary);
+      }
+      & input::placeholder {
+        opacity: 1;
+      }
+    }
+    & .prefix {
+      grid-area: prefix;
+      padding: 0.5rem;
+    }
+    & .search-label,
+    & input[type="search"] {
+      grid-area: input;
+      align-self: center;
+      padding-inline: 0.5rem;
+    }
+    & .search-label {
+      transform-origin: top left;
+      transition:
+        transform 0.2s ease,
+        color 0.2s ease;
+    }
+    & input[type="search"] {
+      transform: translateY(0.25rem); /* Adjust position with label */
+      background-color: transparent;
+      border: none;
+      outline: none;
+      &::placeholder {
+        opacity: 0;
+      }
+    }
+
+    /* SORT */
+    .menu-trigger {
+      anchor-name: --sort;
+    }
+    .menu {
+      position-anchor: --sort;
+      top: anchor(bottom);
+      right: anchor(right);
+      transform-origin: top right;
+    }
+  }
+
+  .table {
+    background-color: var(--surface);
+  }
+
+  .total {
+    display: grid;
+    justify-items: end;
+    & b {
+      font-weight: 500;
+    }
+    & small {
+      font-size: 0.75rem;
+      opacity: 0.6;
+    }
+  }
+
+  ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  li {
+    border-radius: 0.5rem;
+    padding: 1rem;
+    background-color: var(--surface);
+    & header {
+      display: flex;
+      justify-content: space-between;
+    }
+    & h3 {
+      font-size: 1.1rem;
+      font-weight: 400;
+    }
+    & .balance {
+      color: var(--primary);
+    }
+  }
+  hr {
+    border: none;
+    border-top: 1px solid var(--outline);
+  }
+  ul:empty {
+    display: none;
+    & + .list-empty {
+      display: block;
+    }
+  }
+  .list-empty {
+    display: none;
+  }
+
+  .table-empty,
+  .list-empty {
+    text-align: center;
+    background-color: var(--primary-container);
+    border-radius: 1rem;
+    padding: 1rem;
+  }
+
+  @media (width >= 760px) {
+    ul,
+    ul:empty + .list-empty {
+      display: none;
+    }
+  }
+
+  @media (width < 760px) {
+    .table,
+    .table + .table-empty {
+      display: none;
+    }
+  }
+}
