@@ -121,12 +121,17 @@
   }
 
   li {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
     border-radius: 0.5rem;
     padding: 1rem;
     background-color: var(--surface);
-    & header {
-      display: flex;
-      justify-content: space-between;
+    & :nth-child(even) {
+      text-align: end;
+    }
+    & :nth-child(odd) {
+      text-align: start;
     }
     & h3 {
       font-size: 1.1rem;

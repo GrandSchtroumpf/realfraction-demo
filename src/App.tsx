@@ -32,6 +32,7 @@ const sortLabels = {
   asc: "Ascending",
   desc: "Descending",
 };
+type Sort = keyof typeof sortLabels;
 
 const balanceFormatter = new Intl.NumberFormat("en-EN");
 const formatBalance = (balance: number) => balanceFormatter.format(balance);
@@ -41,6 +42,8 @@ const priceFormatter = new Intl.NumberFormat("en-EN", {
 });
 const formatPrice = (price: number) => priceFormatter.format(price);
 
+const initSort = () => (localStorage.getItem("sort") as Sort | null) ?? "asc";
+
 function App() {
   const searchId = useId();
   const sortId = useId();
@@ -48,7 +51,7 @@ function App() {
 
   const [list] = useState(structuredClone(data));
   const [search, setSearch] = useState("");
-  const [sort, setSort] = useState<"asc" | "desc">("asc");
+  const [sort, setSort] = useState<"asc" | "desc">(initSort());
 
   const terms = search
     .split(/[\s,&]+/) // split by whitespace, commas, & (add more if needed)
@@ -70,18 +73,24 @@ function App() {
     return sort === "asc" ? delta : delta * -1;
   });
 
-  const totalLiquidity = filtered.reduce(
+  const totalFiat = filtered.reduce(
     (acc, item) => acc + item.balance * item.price,
     0,
   );
+
+  // No need to useCallback because of compiler
+  const updateSort = (sort: Sort) => {
+    setSort(sort);
+    localStorage.setItem("sort", sort);
+  };
 
   return (
     <div id="dashboard-page">
       <header className="main-header">
         <h1>All your assets in one place</h1>
         <div className="total-liquidity">
-          <span>Total Liquidity</span>
-          <span className="price">{formatPrice(totalLiquidity)}</span>
+          <span>Total Budget</span>
+          <span className="price">{formatPrice(totalFiat)}</span>
         </div>
       </header>
       <main>
@@ -136,7 +145,7 @@ function App() {
                   type="radio"
                   name="sort"
                   checked={sort === "asc"}
-                  onClick={() => setSort("asc")}
+                  onClick={() => updateSort("asc")}
                 />
                 Ascending
               </label>
@@ -146,7 +155,7 @@ function App() {
                   type="radio"
                   name="sort"
                   checked={sort === "desc"}
-                  onClick={() => setSort("desc")}
+                  onClick={() => updateSort("desc")}
                 />
                 Descending
               </label>
@@ -160,27 +169,33 @@ function App() {
               <th>Symbol</th>
               <th>Name</th>
               <th>Balance</th>
-              <th>Total</th>
+              <th>Allocation</th>
+              <th>Price in Fiat</th>
             </tr>
           </thead>
           <tbody>
-            {sorted.map((item) => (
-              <tr key={item.symbol}>
-                <td>{item.symbol}</td>
-                <td>{item.name}</td>
-                <td>{formatBalance(item.balance)}</td>
-                <td className="total">
-                  <div className="total">
-                    <b aria-description="Total price">
-                      {formatPrice(item.price * item.balance)}
-                    </b>
-                    <small aria-description="Price per unit">
-                      {formatPrice(item.price)}/{item.symbol}
-                    </small>
-                  </div>
-                </td>
-              </tr>
-            ))}
+            {sorted.map((item) => {
+              const fiat = item.price * item.balance;
+              const percent = Math.round((fiat / totalFiat) * 100);
+              return (
+                <tr key={item.symbol}>
+                  <td>{item.symbol}</td>
+                  <td>{item.name}</td>
+                  <td>{formatBalance(item.balance)}</td>
+                  <td>{percent}%</td>
+                  <td className="total">
+                    <div className="total">
+                      <b aria-description="Total price">
+                        {formatPrice(item.price * item.balance)}
+                      </b>
+                      <small aria-description="Price per unit">
+                        {formatPrice(item.price)}/{item.symbol}
+                      </small>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
         <div className="table-empty">
@@ -188,25 +203,25 @@ function App() {
         </div>
         {/* List for mobile */}
         <ul>
-          {sorted.map((item) => (
-            <li key={item.symbol}>
-              <header>
+          {sorted.map((item) => {
+            const fiat = item.price * item.balance;
+            const percent = Math.round((fiat / totalFiat) * 100);
+            return (
+              <li key={item.symbol}>
                 <h3>{item.name}</h3>
                 <p className="balance">
                   {formatBalance(item.balance)} {item.symbol}
                 </p>
-              </header>
-              <hr />
-              <p className="total">
-                <b aria-description="Total price">
-                  {formatPrice(item.price * item.balance)}
-                </b>
-                <small aria-description="Price per unit">
-                  {formatPrice(item.price)}/{item.symbol}
-                </small>
-              </p>
-            </li>
-          ))}
+                <p>{percent}%</p>
+                <p className="total">
+                  <b aria-description="Total price">{formatPrice(fiat)}</b>
+                  <small aria-description="Price per unit">
+                    {formatPrice(item.price)}/{item.symbol}
+                  </small>
+                </p>
+              </li>
+            );
+          })}
         </ul>
         <div className="list-empty">
           <p>No results found.</p>
