@@ -73,7 +73,12 @@ function App() {
     return sort === "asc" ? delta : delta * -1;
   });
 
-  const totalFiat = filtered.reduce(
+  const totalFiat = list.reduce(
+    (acc, item) => acc + item.balance * item.price,
+    0,
+  );
+
+  const totalSearch = filtered.reduce(
     (acc, item) => acc + item.balance * item.price,
     0,
   );
@@ -197,32 +202,51 @@ function App() {
               );
             })}
           </tbody>
+          <tfoot>
+            <tr>
+              <td colSpan={5}>
+                <div className="total-search">
+                  <p>Total</p>
+                  <b>{formatPrice(totalSearch)}</b>
+                </div>
+              </td>
+            </tr>
+          </tfoot>
         </table>
         <div className="table-empty">
           <p>No results found.</p>
         </div>
         {/* List for mobile */}
-        <ul>
-          {sorted.map((item) => {
-            const fiat = item.price * item.balance;
-            const percent = Math.round((fiat / totalFiat) * 100);
-            return (
-              <li key={item.symbol}>
-                <h3>{item.name}</h3>
-                <p className="balance">
-                  {formatBalance(item.balance)} {item.symbol}
-                </p>
-                <p>{percent}%</p>
-                <p className="total">
-                  <b aria-description="Total price">{formatPrice(fiat)}</b>
-                  <small aria-description="Price per unit">
-                    {formatPrice(item.price)}/{item.symbol}
-                  </small>
-                </p>
-              </li>
-            );
-          })}
-        </ul>
+        <dl>
+          <div className="total-search">
+            <dt>Total:</dt>
+            <dd>{formatPrice(totalSearch)}</dd>
+          </div>
+          <dt className="invisible">My assets</dt>
+          <dd>
+            <ul>
+              {sorted.map((item) => {
+                const fiat = item.price * item.balance;
+                const percent = Math.round((fiat / totalFiat) * 100);
+                return (
+                  <li key={item.symbol}>
+                    <h3>{item.name}</h3>
+                    <p className="balance">
+                      {formatBalance(item.balance)} {item.symbol}
+                    </p>
+                    <p>{percent}%</p>
+                    <p className="total">
+                      <b aria-description="Total price">{formatPrice(fiat)}</b>
+                      <small aria-description="Price per unit">
+                        {formatPrice(item.price)}/{item.symbol}
+                      </small>
+                    </p>
+                  </li>
+                );
+              })}
+            </ul>
+          </dd>
+        </dl>
         <div className="list-empty">
           <p>No results found.</p>
         </div>

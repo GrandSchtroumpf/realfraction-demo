@@ -13,6 +13,8 @@
     --primary-container: oklch(93% var(--chroma-mid) var(--hue));
     --primary: oklch(50% var(--chroma-high) var(--hue));
     --on-primary: oklch(100% var(--chroma-mid) var(--hue));
+
+    --outline: oklch(80% 0.01 var(--hue));
   }
   @media (prefers-color-scheme: dark) {
     --chroma-low: 4%;
@@ -28,5 +30,7 @@
     --primary-container: oklch(30% var(--chroma-mid) var(--hue));
     --primary: oklch(85% var(--chroma-high) var(--hue));
     --on-primary: oklch(20% var(--chroma-mid) var(--hue));
+
+    --outline: oklch(40% 0.01 var(--hue));
   }
 }
